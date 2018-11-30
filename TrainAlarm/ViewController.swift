@@ -36,6 +36,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     //目的地
     var destination = CLLocationCoordinate2D()
+    
+    var annotation = MKPointAnnotation()
+    
     //便宜上の目的地（初回起動時用)
     let destinationDefault = CLLocationCoordinate2D(latitude: 35.681167, longitude: 139.767052) //東京駅
     
@@ -175,11 +178,29 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     //今のところ固定で作成。最終的にはマスタ化する。
     func makeAnnotation() {
         
-        let annotation = MKPointAnnotation()
+        
         annotation.coordinate = destination
         annotation.title = "目的地"
 
         myMap.addAnnotation(annotation)
+        
+    }
+    
+    //地図を長押しした際に、目的地を変更する
+    @IBAction func mapLongPress(_ sender: UILongPressGestureRecognizer) {
+        //長押しの終了でのみ実行する。
+        guard sender.state == UIGestureRecognizerState.ended else {
+            return
+        }
+        
+        //座標の取得
+        let pressPoint = sender.location(in: myMap)
+        destination = myMap.convert(pressPoint, toCoordinateFrom: myMap)
+
+        //目的地の再作成
+        makeAnnotation()
+        
+        //目的地の保存
         
     }
     
