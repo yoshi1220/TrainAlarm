@@ -83,6 +83,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
+    //ユーザーデフォルト情報に目的地の緯度経度を保存する
+    func saveUserDefaultInformation() {
+        
+        let userDefaults = UserDefaults.standard
+     
+        //目的地の保存
+        UserDefaults.standard.set("目的地", forKey: "Annotaion")
+        UserDefaults.standard.set(destination.latitude, forKey: "latitude")
+        UserDefaults.standard.set(destination.longitude, forKey: "longitude")
+    }
+    
     //到着ラーム用のサウンドプレイヤー関連の初期化
     func initializeSoundPlayer() {
         
@@ -201,7 +212,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         makeAnnotation()
         
         //目的地の保存
-        
+        saveUserDefaultInformation()
     }
     
     // トラッキングモードを切り替える
